@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import Pluralize from 'pluralize';
-import ToSnake from 'to-snake-case';
 import _ from 'lodash';
 class Service {
 	constructor() {
@@ -29,7 +28,7 @@ class Service {
 		return origin + prefix + endpoint + params;
 	}
 
-	all(params) {
+	get(params) {
 		params = typeof params == 'undefined' ? '' : params;
 		params = params == null ? '' : params;
 
@@ -105,7 +104,7 @@ class Service {
 	delete(id) {
 		var endpoint = this.buildUrl() + "/" + id;
 		var resource_promise = new Promise((resolve, reject) => {
-			Vue.http.delete(endpoint, data)
+			Vue.http.delete(endpoint)
 				.then((data) => {
 					resolve(data.data); // Deberiamos definir las convenciones para cuando recibamos una collección
 				})
