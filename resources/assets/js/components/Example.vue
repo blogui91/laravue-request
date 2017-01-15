@@ -46,7 +46,6 @@
                                     </div>
                                 </div> 
                             </div>
-
                     </div>
                 </div>
             </div>
@@ -57,6 +56,7 @@
 <script>
     import PostService from '../services/PostService.js';
     let Post = new PostService();
+
     export default {
         data(){
             return {
@@ -71,14 +71,27 @@
         },
         mounted() {
             console.log('Component ready.');
-            this.getList();
+            this.getPosts();
+
+            var request = Post.getSuffix({
+                name : "Cesar",
+                age : 25,
+                email : "casc.santana@gmail.com"
+            });
+
+            request.then(response =>{
+                console.log(response);
+            }).catch(error =>{
+                alert("Hubo un error :(");
+            })
+
         },
         methods : {
-            getList(){
+            getPosts(){
                 let posts = Post.get();
                 let vm = this;
-                posts.then(posts =>{
-                    vm.posts = posts.data.map(post =>{
+                posts.then(collection =>{
+                    vm.posts = collection.data.map(post =>{
                         post.edit = post.deleted = false;
                         return post;
                     });
@@ -115,14 +128,15 @@
                 var vm = this;
                 var request = Post.create(post);
                 request.then(new_post =>{
-                    new_post.edit = false;
+                    new_post.edit = new_post.deleted = false;
                     vm.posts.push(new_post);
+                    vm.resetInput();
                 }).catch(error =>{
                     alert("Hubo un error :(");
                 });
             },
             resetInput(){
-                this.model.title = '';
+                this.post.title = '';
             },
             removePostFromList(id){
                 var index = this.posts.map(post => post.id).indexOf(id);

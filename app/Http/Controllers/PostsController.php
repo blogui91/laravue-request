@@ -6,6 +6,13 @@ use Illuminate\Http\Request;
 use App\Post;
 class PostsController extends Controller
 {
+
+    public function myMethod()
+    {
+        $data = request()->all();
+        $data['response'] = 'Received';
+        return response()->json($data, 200);
+    }
     /**
      * Display a listing of the resource.
      *

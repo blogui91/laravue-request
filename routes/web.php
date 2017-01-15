@@ -15,7 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('posts','PostsController');
+Route::post('/admin/posts/my-suffix', 'PostsController@myMethod');
+Route::resource('admin/posts','PostsController');
 
 Auth::routes();
 

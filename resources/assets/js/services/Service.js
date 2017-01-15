@@ -115,30 +115,6 @@ class Service {
 		return resource_promise;
 	}
 
-	prepareCollection(collection) {
-		var that = this;
-		if (this.model) {
-			collection.data = collection.data.map(item => {
-				return that.parseItem(item);
-			});
-		}
-		return collection;
-	}
-
-	prepareItem(item) {
-		if (this.model) {
-			return this.parseItem(item);
-		}
-		return item;
-	}
-
-	parseItem(item) {
-		return new this.model(item)
-	}
-
-	loadModel(model) {
-		this.model = model;
-	}
 }
 
 export default Service;
