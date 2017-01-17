@@ -16,6 +16,9 @@
     "vue-resource": "^1.0.3"
   },
   "dependencies": {
+    "easiest-js-validator": "^1.0.7",
+    "es6-mixin": "^0.3.0",
+    "event-emitter-es6": "^1.1.5",
     "pluralize": "^3.1.0"
   }
 }

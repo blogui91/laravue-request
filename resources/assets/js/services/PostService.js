@@ -5,7 +5,7 @@ class Post extends Service {
 
 	constructor() {
 		super();
-		this.config.prefix = '/admin/';
+		this.service.config.prefix = '/admin/';
 		// this.config.origin = 'https://api.facebook.com';
 		// this.config.endpointUrl = 'store-requests/';
 	}

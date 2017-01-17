@@ -3,6 +3,7 @@ import Pluralize from 'pluralize';
 import _ from 'lodash';
 class Service {
 	constructor() {
+		this.service = {}
 		this.initService();
 	}
 
@@ -10,10 +11,16 @@ class Service {
 		return this.constructor.name;
 	}
 
+	setConfig(config) {
+		this.service = {
+			config
+		}
+	}
+
 	initService() {
 		this.model = null;
 		this.parentRootClass = 'Service';
-		this.config = {
+		this.service.config = {
 			origin: window.location.origin,
 			prefix: '/',
 			endpointUrl: Pluralize(_.kebabCase(this.getClassName()))
@@ -21,9 +28,9 @@ class Service {
 	}
 
 	buildUrl(params = '') {
-		var prefix = this.config.prefix;
-		var origin = this.config.origin;
-		var endpoint = this.config.endpointUrl;
+		var prefix = this.service.config.prefix;
+		var origin = this.service.config.origin;
+		var endpoint = this.service.config.endpointUrl;
 
 		return origin + prefix + endpoint + params;
 	}

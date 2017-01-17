@@ -8,8 +8,8 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-sm-6 col-md-4" v-for="post in computedPosts">
-                                <div class="thumbnail">
-                                    <img alt="100%x200" data-src="holder.js/100%x200" style="height: 200px; width: 100%; display: block;" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjQyIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDI0MiAyMDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzEwMCV4MjAwCkNyZWF0ZWQgd2l0aCBIb2xkZXIuanMgMi42LjAuCkxlYXJuIG1vcmUgYXQgaHR0cDovL2hvbGRlcmpzLmNvbQooYykgMjAxMi0yMDE1IEl2YW4gTWFsb3BpbnNreSAtIGh0dHA6Ly9pbXNreS5jbwotLT48ZGVmcz48c3R5bGUgdHlwZT0idGV4dC9jc3MiPjwhW0NEQVRBWyNob2xkZXJfMTU5YTA5MzUyOTIgdGV4dCB7IGZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMnB0IH0gXV0+PC9zdHlsZT48L2RlZnM+PGcgaWQ9ImhvbGRlcl8xNTlhMDkzNTI5MiI+PHJlY3Qgd2lkdGg9IjI0MiIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNFRUVFRUUiLz48Zz48dGV4dCB4PSI4OS44MDQ2ODc1IiB5PSIxMDUuMSI+MjQyeDIwMDwvdGV4dD48L2c+PC9nPjwvc3ZnPg==" data-holder-rendered="true">
+                                <div class="thumbnail" v-if="post.id">
+                                    <img alt="100%x200" data-src="holder.js/100%x200" style="height: 200px; width: 100%; display: none;" src="" data-holder-rendered="true">
                                     <div class="caption">
                                         <h3 v-text="post.title" v-if="!post.edit"></h3>
                                         <p v-text="post.description" v-if="!post.edit"></p>
@@ -22,17 +22,41 @@
                                         </div>
                                         <p>
                                             <button class="btn btn-primary" :disabled="post.edit" type="button" @click="post.edit = true">Editar</button>
-                                            <button class="btn btn-success" :disabled="!post.edit" @click="save(post)" type="button">Guardar</button>
+                                            <button class="btn btn-success" :disabled="!post.edit" @click="post.save(); post.edit = false;" type="button">Guardar</button>
                                             <button class="btn btn-warning" v-show="post.edit" @click="post.edit = false" type="button">Cancelar</button>
                                             <button class="btn btn-danger" @click="confirmOperation(post)"  v-show="!post.edit" type="button">Eliminar</button>
 
                                         </p>
                                     </div>
                                 </div> 
+
+                                <div class="thumbnail" v-else>
+                                    <img alt="100%x200" data-src="holder.js/100%x200" style="height: 200px; width: 100%; display: none;" src="" data-holder-rendered="true">
+                                    <div class="caption">
+                                        <div class="form-group" >
+                                            <label for="title">Título</label>
+                                            <input type="email" class="form-control" v-model="post.title" id="title" placeholder="Titulo">
+                                        </div> 
+                                        <div class="form-group" >
+                                            <textarea class="form-control" rows="3" v-model="post.description"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <select v-model="post.user_id" class="form-control">
+                                                <option value="">Select an user</option>
+                                                <option value="1">Cesar Santana</option>
+                                            </select>
+                                        </div>
+                                        <p>
+                                            
+                                            <button class="btn btn-success" @click="post.save()" type="button">Guardar</button>
+
+                                        </p>
+                                    </div>
+                                </div> 
                             </div>
-                             <div class="col-sm-6 col-md-4">
+                             <div class=" hide col-sm-6 col-md-4">
                                 <div class="thumbnail">
-                                    <img alt="100%x200" data-src="holder.js/100%x200" style="height: 200px; width: 100%; display: block;" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjQyIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDI0MiAyMDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzEwMCV4MjAwCkNyZWF0ZWQgd2l0aCBIb2xkZXIuanMgMi42LjAuCkxlYXJuIG1vcmUgYXQgaHR0cDovL2hvbGRlcmpzLmNvbQooYykgMjAxMi0yMDE1IEl2YW4gTWFsb3BpbnNreSAtIGh0dHA6Ly9pbXNreS5jbwotLT48ZGVmcz48c3R5bGUgdHlwZT0idGV4dC9jc3MiPjwhW0NEQVRBWyNob2xkZXJfMTU5YTA5MzUyOTIgdGV4dCB7IGZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMnB0IH0gXV0+PC9zdHlsZT48L2RlZnM+PGcgaWQ9ImhvbGRlcl8xNTlhMDkzNTI5MiI+PHJlY3Qgd2lkdGg9IjI0MiIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNFRUVFRUUiLz48Zz48dGV4dCB4PSI4OS44MDQ2ODc1IiB5PSIxMDUuMSI+MjQyeDIwMDwvdGV4dD48L2c+PC9nPjwvc3ZnPg==" data-holder-rendered="true">
+                                    <img alt="100%x200" data-src="holder.js/100%x200" style="height: 200px; width: 100%; display: none;" src="" data-holder-rendered="true">
                                     <div class="caption">
                                         <div class="form-group">
                                             <label for="title">Título</label>
@@ -56,6 +80,7 @@
 <script>
     import PostService from '../services/PostService.js';
     let Post = new PostService();
+    import PostModel from '../models/PostModel.js';
 
     export default {
         data(){
@@ -66,34 +91,26 @@
                     title : '',
                     description : 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus voluptates, distinctio debitis possimus repudiandae iusto quis ipsum impedit rerum nostrum laborum nulla et nisi neque quibusdam, necessitatibus. Nulla laboriosam, officiis?',
                     user_id : 1
-                }
+                },
             }
         },
         mounted() {
             console.log('Component ready.');
             this.getPosts();
-
-            var request = Post.getSuffix({
-                name : "Cesar",
-                age : 25,
-                email : "casc.santana@gmail.com"
-            });
-
-            request.then(response =>{
-                console.log(response);
-            }).catch(error =>{
-                alert("Hubo un error :(");
-            })
-
         },
         methods : {
+            addNewPost(){
+                this.posts.push(new PostModel());
+            },
             getPosts(){
                 let posts = Post.get();
                 let vm = this;
                 posts.then(collection =>{
                     vm.posts = collection.data.map(post =>{
-                        post.edit = post.deleted = false;
-                        return post;
+                        var _post = new PostModel();
+                        _post.fill(post);
+                        _post.edit = _post.deleted = false;
+                        return _post
                     });
                 }).catch(error =>{
                     console.log(error);
